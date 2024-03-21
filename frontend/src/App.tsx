@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import AxiosInstance from './AxiosInstance';
+import styled from 'styled-components';
+
+
+const EmphasisText = styled.p`
+  em {
+    font-style: italic;
+    color: red; /* 강조할 색상 지정 */
+  }
+`;
 
 
 function App() {
@@ -8,7 +17,7 @@ function App() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await AxiosInstance.get('/kwon');
+        const response = await AxiosInstance.get('/emtype');
         setUserInfo(response.data);
       } catch (error) {
         console.error('Error fetching user info', error);
@@ -21,7 +30,11 @@ function App() {
   return (
     <div className="App">
       <h1>User Information</h1>
-      {userInfo ? <p>{userInfo}</p> : <p>Loading...</p>}
+      {userInfo ? (
+        <EmphasisText dangerouslySetInnerHTML={{ __html: userInfo }} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
