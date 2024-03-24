@@ -19,33 +19,33 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+	// @Autowired
+	// private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return  http
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(cors -> cors.configurationSource(corsConfiguration()))
+			// .cors(cors -> cors.configurationSource(corsConfiguration()))
 			.authorizeHttpRequests(auth -> {
 			auth.anyRequest().authenticated();
 		})
 			.oauth2Login(oath2->{
 				// oath2.loginPage("/login").permitAll();
-				oath2.successHandler(oAuth2LoginSuccessHandler);
+				// oath2.successHandler(oAuth2LoginSuccessHandler);
 			})
 			.build();
 	}
-
-	@Bean
-	CorsConfigurationSource corsConfiguration() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-		configuration.addAllowedHeader("*");
-		configuration.addAllowedMethod("*");
-		configuration.setAllowCredentials(true);
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",configuration);
-		return urlBasedCorsConfigurationSource;
-	}
+	//
+	// @Bean
+	// CorsConfigurationSource corsConfiguration() {
+	// 	CorsConfiguration configuration = new CorsConfiguration();
+	// 	configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+	// 	configuration.addAllowedHeader("*");
+	// 	configuration.addAllowedMethod("*");
+	// 	configuration.setAllowCredentials(true);
+	// 	UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+	// 	urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",configuration);
+	// 	return urlBasedCorsConfigurationSource;
+	// }
 }

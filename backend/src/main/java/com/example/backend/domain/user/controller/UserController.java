@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "userController", description = "회원가입 도메인")
 public class UserController {
 	private final UserService userService;
