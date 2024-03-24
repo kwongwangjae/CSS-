@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.domain.user.dto.UserCreateRequest;
 import com.example.backend.domain.user.entity.User;
+import com.example.backend.domain.user.service.UserInterfaceService;
 import com.example.backend.domain.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "userController", description = "회원가입 도메인")
 public class UserController {
 	private final UserService userService;
+	private final UserInterfaceService userInterfaceService;
 
 	@PostMapping("/users")
 	@Operation(summary = "회원 정보 등록", description = "Oauth형식으로 사용예정")
@@ -57,5 +59,10 @@ public class UserController {
 	@GetMapping("/emtype")
 	public String em() {
 		return "A relentless pulse of digital beats, simulating the heart of a thriving cybernetic <em>organism</em>.";
+	}
+
+	@PostMapping("/user/{email}")
+	public void changeToAdmin(@PathVariable String email) {
+		userInterfaceService.findByEmail(email).ifPresent(userInterfaceService::save);
 	}
 }

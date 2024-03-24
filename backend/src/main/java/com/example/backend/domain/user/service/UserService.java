@@ -1,5 +1,7 @@
 package com.example.backend.domain.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.backend.domain.user.dto.UserCreateRequest;
@@ -16,7 +18,7 @@ public class UserService {
 
 	public User createRequest(UserCreateRequest request) {
 		User user = User.builder()
-			.username(request.getUsername())
+			.name(request.getUsername())
 			.email(request.getEmail())
 			.password(request.getPassword())
 			.build();
@@ -26,6 +28,9 @@ public class UserService {
 	public User findResponse(Long userId) {
 		return userRepository.findById(userId).orElseThrow();
 	}
+
+
+
 
 
 }
