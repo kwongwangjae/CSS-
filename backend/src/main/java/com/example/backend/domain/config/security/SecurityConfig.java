@@ -19,8 +19,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	// @Autowired
-	// private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+	@Autowired
+	private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,7 +32,7 @@ public class SecurityConfig {
 		})
 			.oauth2Login(oath2->{
 				// oath2.loginPage("/login").permitAll();
-				// oath2.successHandler(oAuth2LoginSuccessHandler);
+				oath2.successHandler(oAuth2LoginSuccessHandler);
 			})
 			.build();
 	}
