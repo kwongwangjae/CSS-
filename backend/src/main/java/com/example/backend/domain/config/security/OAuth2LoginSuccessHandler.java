@@ -18,6 +18,7 @@ import com.example.backend.domain.user.entity.RegistrationSource;
 import com.example.backend.domain.user.entity.User;
 import com.example.backend.domain.user.entity.UserRole;
 import com.example.backend.domain.user.service.UserInterfaceService;
+import com.example.backend.domain.user.service.UserService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,37 +38,43 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws ServletException, IOException {
 
-		// OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
+		OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
 
-		// if("google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())){
-		// 	DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
-		//
-		// 	Map<String, Object> attributes = principal.getAttributes();
-		//
-		// 	String email = attributes.getOrDefault("email", "").toString();
-		// 	String name = attributes.getOrDefault("name", "").toString();
-		//
-		// 	userService.findByEmail(email)
-		// 		.ifPresentOrElse(user -> {
-		// 			DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
-		// 				attributes, "id");
-		// 			Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(user.getRole().name())),
-		// 				oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-		// 			SecurityContextHolder.getContext().setAuthentication(securityAuth);
-		// 		}, () -> {
-		// 			User userEntity = new User();
-		// 			userEntity.setRole(UserRole.ROLE_USER);
-		// 			userEntity.setEmail(email);
-		// 			userEntity.setName(name);
-		// 			userEntity.setSource(RegistrationSource.GOOGLE);
-		// 			userService.save(userEntity);
-		// 			DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
-		// 				attributes, "id");
-		// 			Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
-		// 				oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-		// 			SecurityContextHolder.getContext().setAuthentication(securityAuth);
-		// 		});
-		// }
+		if("google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())){
+			DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
+
+			Map<String, Object> attributes = principal.getAttributes();
+
+			String id = attributes.getOrDefault("sub", "").toString();
+			String email = attributes.getOrDefault("email", "").toString();
+			String name = attributes.getOrDefault("name", "").toString();
+
+			System.out.println("id :" + id); //못받아옴
+			System.out.println("email :" + email);
+			System.out.println("name :"  + name);
+
+			userService.findByEmail(email)
+				.ifPresentOrElse(user -> {
+					DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
+						attributes, "name");
+					Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(user.getRole().name())),
+						oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
+					SecurityContextHolder.getContext().setAuthentication(securityAuth);
+				}, () -> {
+					User userEntity = new User();
+					userEntity.setRole(UserRole.ROLE_USER);
+					userEntity.setEmail(email);
+					userEntity.setName(name);
+					userEntity.setSource(RegistrationSource.GOOGLE);
+					userEntity.setSub(id);
+					userService.save(userEntity);
+					DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
+						attributes, "name");
+					Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
+						oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
+					SecurityContextHolder.getContext().setAuthentication(securityAuth);
+				});
+		}
 		this.setAlwaysUseDefaultTargetUrl(true);
 		this.setDefaultTargetUrl("http://localhost:3000");
 		super.onAuthenticationSuccess(request, response, authentication);

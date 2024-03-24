@@ -16,14 +16,14 @@ public class UserService {
 	private final UserRepository userRepository;
 	// private final UserCreateRequest userCreateRequest;
 
-	public User createRequest(UserCreateRequest request) {
-		User user = User.builder()
-			.name(request.getUsername())
-			.email(request.getEmail())
-			.password(request.getPassword())
-			.build();
-		return userRepository.save(user);
-	}
+	// public User createRequest(UserCreateRequest request) {
+	// 	User user = User.builder()
+	// 		.name(request.getUsername())
+	// 		.email(request.getEmail())
+	// 		.password(request.getPassword())
+	// 		.build();
+	// 	return userRepository.save(user);
+	// }
 
 	public User findResponse(Long userId) {
 		return userRepository.findById(userId).orElseThrow();

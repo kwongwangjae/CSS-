@@ -21,7 +21,6 @@ import lombok.Setter;
 // @NoArgsConstructor(access = AccessLevel.PUBLIC)
 // @Setter
 @Data
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,13 +43,16 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 
+	@Column(name = "sub", unique = true)
+	private String sub; // 추가된 속성
 
-	@Builder
-	public User(String name, String password, String email) {
-		this.name = name;
-		this.password = password;
-		this.email = email;
-	}
+
+	// @Builder
+	// public User(String name, String password, String email) {
+	// 	this.name = name;
+	// 	this.password = password;
+	// 	this.email = email;
+	// }
 
 
 }

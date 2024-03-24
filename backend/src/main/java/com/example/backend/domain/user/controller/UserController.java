@@ -31,22 +31,22 @@ public class UserController {
 	private final UserService userService;
 	private final UserInterfaceService userInterfaceService;
 
-	@PostMapping("/users")
-	@Operation(summary = "회원 정보 등록", description = "Oauth형식으로 사용예정")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json")),
-		@ApiResponse(responseCode = "409", description = "이미 가입된 계정입니다.", content = @Content(mediaType = "application/json")),
-		@ApiResponse(responseCode = "404", description = "데이터베이스 연결에 실패하였습니다.", content = @Content(mediaType = "application/json")),
-		@ApiResponse(responseCode = "300", description = "비밀번호 암호화에 실패하였습니다.", content = @Content(mediaType = "application/json"))
-	})
-	@Parameters({
-		@Parameter(name = "email", description = "이메일", example = "kgt22@naver.com"),
-		@Parameter(name = "password", description = "6자~12자 이내", example = "abcd1234"),
-	})
-	public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest request) {
-		User newUser = userService.createRequest(request);
-		return ResponseEntity.ok(newUser);
-	}
+	// @PostMapping("/users")
+	// @Operation(summary = "회원 정보 등록", description = "Oauth형식으로 사용예정")
+	// @ApiResponses(value = {
+	// 	@ApiResponse(responseCode = "200", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json")),
+	// 	@ApiResponse(responseCode = "409", description = "이미 가입된 계정입니다.", content = @Content(mediaType = "application/json")),
+	// 	@ApiResponse(responseCode = "404", description = "데이터베이스 연결에 실패하였습니다.", content = @Content(mediaType = "application/json")),
+	// 	@ApiResponse(responseCode = "300", description = "비밀번호 암호화에 실패하였습니다.", content = @Content(mediaType = "application/json"))
+	// })
+	// @Parameters({
+	// 	@Parameter(name = "email", description = "이메일", example = "kgt22@naver.com"),
+	// 	@Parameter(name = "password", description = "6자~12자 이내", example = "abcd1234"),
+	// })
+	// public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest request) {
+	// 	User newUser = userService.createRequest(request);
+	// 	return ResponseEntity.ok(newUser);
+	// }
 
 	@GetMapping("/users/{userId}")
 	@ApiResponse(responseCode = "1000", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json"))
